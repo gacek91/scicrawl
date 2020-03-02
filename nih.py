@@ -96,4 +96,4 @@ def nihsearch(term,email,records=100,database='pmc',return_as='df',fullOutput = 
     else:
         return export
 
-nihsearch(term=term,records=records,database=database)
+nihsearch(term=term,email=email,records=records,database=database)
