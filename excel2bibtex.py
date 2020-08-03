@@ -12,8 +12,8 @@ def excel2bibtex(file):
     df = pd.read_excel(file)
     dois = list(df.DOI)
     bibtex = []
+    dickt = {}
     for doi in tqdm(iterable=dois,desc='Processed',unit='',total=len(dois)):
-        dickt = {}
         req = urllib.request.Request(doi)
         req.add_header('Accept', 'application/x-bibtex')
         try:

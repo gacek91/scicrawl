@@ -41,7 +41,6 @@ def new_project(name, path = os.getcwd(), folders = ['Data','Scripts','Images','
     import warnings, git
     from github import Github
     import github
-    create = list()
     fullpath = op.join(path, name)
     if overwrite == True:
         from shutil import rmtree
@@ -49,17 +48,17 @@ def new_project(name, path = os.getcwd(), folders = ['Data','Scripts','Images','
             rmtree(fullpath)
             print('Removed old project together with all files.')
     if not op.exists(fullpath):
-        create.append(fullpath)
+        create = [fullpath]
         folderspaths = [op.join(fullpath, folder) for folder in folders]
-        create.extend(p for p in folderspaths)
+        create.extend(iter(folderspaths))
         if subfolders != None:
-            subfolderspaths = list()
+            subfolderspaths = []
             for folder in subfolders.keys():
                 if type(subfolders[folder]) == list:
                     subfolderspaths.extend([op.join(fullpath,folder,p) for p in subfolders[folder]])
                 else:
                     subfolderspaths.append(op.join(fullpath,folder,subfolders[folder]))
-            create.extend(p for p in subfolderspaths)
+            create.extend(iter(subfolderspaths))
         for c in create:
             os.mkdir(c)
         print('Successfully created the project <<{}>> with all the requested folders and subfolders.'.format(name))
@@ -158,7 +157,7 @@ def overwrite_github_repo(Instance, name):
         if x == 'n':
             warn("Procedure halted. Doing nothing.")
             break
-        if x == 'y':
+        elif x == 'y':
             try:
                 repo = Instance.get_repo(name)
                 repo.delete()

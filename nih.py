@@ -71,10 +71,7 @@ def nihsearch(term,email,records=100,database='pmc',return_as='df',fullOutput = 
                 dickt['Year'] = int(currec['DP'])
             except:
                 dickt['Year'] = int(currec['DP'].split(' ')[0])
-            if len(currec['PT']) > 1:
-                dickt['Type'] = currec['PT'][1]
-            else:
-                dickt['Type'] = currec['PT'][0]
+            dickt['Type'] = currec['PT'][1] if len(currec['PT']) > 1 else currec['PT'][0]
             export.append(dickt)
             indices.append(i)
         except:
@@ -84,9 +81,7 @@ def nihsearch(term,email,records=100,database='pmc',return_as='df',fullOutput = 
         import pandas as pd
         export = pd.DataFrame(export,index=indices)
         export = export[['Authors','Year','Title','Language','Type','Journal','DOI','Abstract']]
-    elif return_as == list:
-        pass
-    else:
+    elif return_as != list:
         print('Requested data type ({}) not available, exporting as a list of dictionaries'.format(return_as))
     if save_excel == True:
         export.to_excel('{}.xlsx'.format(term))
